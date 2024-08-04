@@ -24,12 +24,25 @@ const addFood = async (req, res) => {
 
 // all food list
 const listFood = async (req, res) => {
-  const { paginatedItems } = req;
-  try {
-    return res.status(200).json({ success: true, ...paginatedItems });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Error" });
+  if (!req.query.page || !req.query.limit) {
+    try {
+      const food = await foodModel.find();
+      if (!food) {
+        return res.status(200).json({ success: true, data: [] });
+      }
+      return res.status(200).json({ success: true, data: food });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: "Error" });
+    }
+  } else {
+    try {
+      const { paginatedItems } = req;
+      return res.status(200).json({ success: true, ...paginatedItems });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: "Error" });
+    }
   }
 };
 

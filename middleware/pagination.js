@@ -1,5 +1,8 @@
 export const paginateData = (model) => async (req, res, next) => {
   try {
+    if (!req.query.page || !req.query.limit) {
+      return next();
+    }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
     const skip = (page - 1) * limit;
