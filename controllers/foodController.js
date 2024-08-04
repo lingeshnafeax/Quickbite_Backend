@@ -24,9 +24,9 @@ const addFood = async (req, res) => {
 
 // all food list
 const listFood = async (req, res) => {
+  const { paginatedItems } = req;
   try {
-    const foods = await foodModel.find({});
-    res.status(200).json({ success: true, data: foods });
+    return res.status(200).json({ success: true, ...paginatedItems });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Error" });

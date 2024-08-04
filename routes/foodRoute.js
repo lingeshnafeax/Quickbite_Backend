@@ -5,6 +5,8 @@ import {
   removeFood,
 } from "../controllers/foodController.js";
 import multer from "multer";
+import { paginateData } from "../middleware/pagination.js";
+import foodModel from "../models/foodModel.js";
 
 const foodRouter = express.Router();
 
@@ -20,7 +22,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 foodRouter.post("/add", upload.single("image"), addFood);
-foodRouter.get("/list", listFood);
+foodRouter.get("/list", paginateData(foodModel), listFood);
 foodRouter.delete("/remove/:foodId", removeFood);
 
 export default foodRouter;
